@@ -1,0 +1,110 @@
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { ChatEngine } from "react-chat-engine";
+import { auth } from "../firebase";
+import { useAuth } from "../contexts/AuthContext";
+import axios from "axios";
+
+const Chats = () => {
+  const { user } = useAuth();
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await auth.signOut();
+    navigate("/");
+  };
+
+  const getFile = async (url) => {
+    try {
+      const response = await fetch(url);
+      const data = await response.blob();
+      return new File([data], "userPhoto.jpg", { type: "image/jpeg" });
+    } catch (error) {
+      console.error("Error fetching user photo:", error);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    const setupChatEngine = async () => {
+      if (!user) {
+        navigate("/");
+        return;
+      }
+
+      try {
+        await axios.get("https://api.chatengine.io/users/me", {
+          headers: {
+            "project-id": "03a19186-498a-4282-8215-ee185590fda3",
+            "user-name": user.email,
+            "user-secret": user.uid,
+          },
+        });
+        setLoading(false);
+      } catch (error) {
+        const formData = new FormData();
+        formData.append("email", user.email);
+        formData.append("username", user.displayName || user.email);
+        formData.append("secret", user.uid);
+
+        const avatar = await getFile(user.photoURL);
+        if (avatar) {
+          formData.append("avatar", avatar, avatar.name);
+
+          try {
+            await axios.post("https://api.chatengine.io/users/", formData, {
+              headers: {
+                "private-key": "93fbcbd9-8877-41be-8845-d2f9b83f51db",
+              },
+            });
+            setLoading(false);
+          } catch (error) {
+            console.error("Error creating user:", error);
+          }
+        } else {
+          console.error("User photo not found.");
+          setLoading(false);
+        }
+      }
+    };
+
+    setupChatEngine();
+  }, [user, navigate]);
+
+  if (!user || loading) {
+    return (
+      <div
+        style={{
+          color: "red",
+          width: "100vw",
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <h2>Loading...</h2>
+      </div>
+    );
+  }
+
+  return (
+    <div className="chat-page">
+      <div className="nav-bar">
+        <div className="logo-tab">Univ-Chat</div>
+        <div className="logout-tab" onClick={handleLogout}>
+          Logout
+        </div>
+      </div>
+      <ChatEngine
+        height="calc(100vh - 66px)"
+        projectId="03a19186-498a-4282-8215-ee185590fda3"
+        userName={user.email}
+        userSecret={user.uid}
+      />
+    </div>
+  );
+};
+
+export default Chats;
