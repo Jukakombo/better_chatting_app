@@ -9,7 +9,6 @@ const Chats = () => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
   const handleLogout = async () => {
     await auth.signOut();
     navigate("/");
