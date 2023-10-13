@@ -55,7 +55,7 @@ const Chats = () => {
           try {
             await axios.post("https://api.chatengine.io/users/", formData, {
               headers: {
-                "private-key": "93fbcbd9-8877-41be-8845-d2f9b83f51db",
+                "Private-key": "69326175-6fae-466d-9844-40900d3169ba",
               },
             });
             setLoading(false);
@@ -72,22 +72,22 @@ const Chats = () => {
     setupChatEngine();
   }, [user, navigate]);
 
-  if (!user || loading) {
-    return (
-      <div
-        style={{
-          color: "red",
-          width: "100vw",
-          height: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <h2>Loading...</h2>
-      </div>
-    );
-  }
+  // if (!user || loading) {
+  //   return (
+  //     <div
+  //       style={{
+  //         color: "red",
+  //         width: "100vw",
+  //         height: "100vh",
+  //         display: "flex",
+  //         alignItems: "center",
+  //         justifyContent: "center",
+  //       }}
+  //     >
+  //       <h2>Loading...</h2>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="chat-page">
@@ -97,11 +97,12 @@ const Chats = () => {
           Logout
         </div>
       </div>
+
       <ChatEngine
-        height="calc(100vh - 66px)"
-        projectId="03a19186-498a-4282-8215-ee185590fda3"
-        userName={user.email}
+        projectID="d0aa5ad2-826b-4240-892c-19801d933e60"
+        userName={user.displayName}
         userSecret={user.uid}
+        height="calc(100vh - 66px)"
       />
     </div>
   );
