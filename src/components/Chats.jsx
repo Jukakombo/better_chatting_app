@@ -92,7 +92,7 @@ const Chats = () => {
   return (
     <div className="chat-page">
       <div className="nav-bar">
-        <div className="logo-tab">Univ-Chat</div>
+        <div className="logo-tab">Juba University Chat</div>
         <div className="logout-tab" onClick={handleLogout}>
           Logout
         </div>
