@@ -90,13 +90,41 @@ const Chats = () => {
 
   return (
     <div className="chat-page">
-      <div className="nav-bar">
-        <div className="logo-tab">Juba University Chat</div>
-        <div className="logout-tab" onClick={handleLogout}>
-          Logout
+      <div className="" style={{ backgroundColor: "#002766" }}>
+        <div
+          className="nav-bar "
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "80%",
+            margin: "auto",
+            color: "white",
+          }}
+        >
+          <div className="">
+            <img
+              src="/logo.png"
+              alt="logo"
+              style={{ width: "40px", height: "40px" }}
+            />
+          </div>
+          <div className="" style={{ fontSize: "24px", fontStyle: "revert" }}>
+            University of Juba Chat Application
+          </div>
+          <div
+            className="logoutBtn"
+            onClick={handleLogout}
+            style={{
+              backgroundColor: "blue",
+              borderRadius: "15px",
+              padding: "8px",
+            }}
+          >
+            Logout
+          </div>
         </div>
       </div>
-
       <ChatEngine
         projectID="d0aa5ad2-826b-4240-892c-19801d933e60"
         userName={user.displayName}
